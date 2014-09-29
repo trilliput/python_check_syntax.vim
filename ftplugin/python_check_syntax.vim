@@ -43,7 +43,6 @@ let g:loaded_pysyntaxchecker=1
 python << end
 
 import vim
-import compiler
 try:
     from pyflakes.checker import Checker
 except:  # pyflakes version <= 0.2.1
@@ -99,7 +98,7 @@ class PySyntaxChecker(object):
         print >> open('/tmp/vim.log', 'a'), filename, source
         msgs = []
         try:
-            tree = compiler.parse(source)
+            tree = compile(source, filename, 'exec', 1024)
         except (SyntaxError, IndentationError), e:
             msgs.append((filename, e.lineno, e.args[0], 'E'))
         except Exception, e:
